@@ -45,11 +45,9 @@ module Lita
       end
 
       def send_messages(target, messages)
+        channel = target.room
         messages.each do |message|
-          p 'target'
-          p target
-          p 'message'
-          p message
+          @client.create_post({ channel_id: channel, message: message })
         end
       end
 
