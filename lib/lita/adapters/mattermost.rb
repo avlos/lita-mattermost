@@ -68,11 +68,11 @@ module Lita
       end
 
       def join(room_id)
-
+        @client.add_user_to_channel(room_id, @me.id)
       end
 
       def part(room_id)
-
+        @client.remove_user_from_channel(room_id, @me.id)
       end
 
       Lita.register_adapter(:mattermost, self)
