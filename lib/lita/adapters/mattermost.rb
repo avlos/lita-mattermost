@@ -12,10 +12,16 @@ module Lita
         @client.use_access_token(config.token)
 
         @ws_client = ::Mattermost::WebSocketClient.new("#{config.server}/api/v4/websocket", config.token)
+
+        me = @client.get_me().body
+        @me = Lita::User.create(me['id'], { name: me['username'] })
       end
 
       def run
+        # Make variables available in event handlers
         saved_robot = robot
+        me = @me
+
         @ws_client.on :open do
           p 'connected'
           saved_robot.trigger(:connected)
@@ -25,19 +31,24 @@ module Lita
           # Receive message events
           if message['event'] == 'posted'
             data = message['data']
+            post = JSON.parse(data['post'])
             p 'received:'
             p data
-            post = JSON.parse(data['post'])
+
             user = Lita::User.find_by_name(data['sender_name'])
-            user = Lita::User.create(user) unless user
-            # room = Lita::Room.new(id: post['channel_id'], metadata: { name: data['channel_name'] })
-            private_message = data['channel_type'] == 'D'
-            source = Lita::Source.new(user: user, room: post['channel_id'], private_message: private_message)
-            message = Lita::Message.new(saved_robot, post['message'], source)
-            if private_message
-              message.command!
+            user = Lita::User.create(post['user_id'], { name: data['sender_name'] }) unless user
+
+            # Ignore own messages
+            if user != me
+              # room = Lita::Room.new(id: post['channel_id'], metadata: { name: data['channel_name'] })
+              private_message = data['channel_type'] == 'D'
+              source = Lita::Source.new(user: user, room: post['channel_id'], private_message: private_message)
+              message = Lita::Message.new(saved_robot, post['message'], source)
+              if private_message
+                message.command!
+              end
+              saved_robot.receive(message)
             end
-            saved_robot.receive(message)
           end
         end
 
