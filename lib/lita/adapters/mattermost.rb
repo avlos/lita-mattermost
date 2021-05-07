@@ -57,6 +57,11 @@ module Lita
 
       def send_messages(target, messages)
         channel = target.room
+        if channel.nil?
+          user = target.user.id
+          channel = @client.create_direct_channel(@me.id, user).body['id']
+        end
+
         messages.each do |message|
           @client.create_post({ channel_id: channel, message: message })
         end
