@@ -23,7 +23,6 @@ module Lita
         me = @me
 
         @ws_client.on :open do
-          p 'connected'
           saved_robot.trigger(:connected)
         end
 
@@ -32,14 +31,11 @@ module Lita
           if message['event'] == 'posted'
             data = message['data']
             post = JSON.parse(data['post'])
-            p 'received:'
-            p data
 
             user = Lita::User.create(post['user_id'], { name: data['sender_name'] })
 
             # Ignore own messages
             if user != me
-              # room = Lita::Room.new(id: post['channel_id'], metadata: { name: data['channel_name'] })
               private_message = data['channel_type'] == 'D'
               source = Lita::Source.new(user: user, room: post['channel_id'], private_message: private_message)
               message = Lita::Message.new(saved_robot, post['message'], source)
@@ -67,7 +63,6 @@ module Lita
       end
 
       def shut_down
-        p 'shutting down'
         @ws_client.close
       end
 
