@@ -35,8 +35,7 @@ module Lita
             p 'received:'
             p data
 
-            user = Lita::User.find_by_name(data['sender_name'])
-            user = Lita::User.create(post['user_id'], { name: data['sender_name'] }) unless user
+            user = Lita::User.create(post['user_id'], { name: data['sender_name'] })
 
             # Ignore own messages
             if user != me
