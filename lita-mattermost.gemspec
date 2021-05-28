@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "lita-mattermost"
-  spec.version       = "0.1.0"
+  spec.version       = "0.2.0"
   spec.authors       = ["Maria Karamina"]
   spec.email         = ["maria.karamina@avlos.ai"]
   spec.description   = "Lita adapter for Mattermost"
