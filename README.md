@@ -13,10 +13,7 @@ gem "lita-mattermost"
 ## Configuration
 
 ```
+config.robot.adapter = :mattermost
 config.adapters.mattermost.server = <mattermost server url>
 config.adapters.mattermost.token = <bot token>
 ```
-
-## Usage
-
-TODO: Describe the plugin's features and how to use them.

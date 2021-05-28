@@ -4,9 +4,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Maria Karamina"]
   spec.email         = ["maria.karamina@avlos.ai"]
   spec.description   = "Lita adapter for Mattermost"
-  spec.summary       = "Lita adapter for Mattermost"
-  spec.homepage      = "https://git.avlos.io/infrastructure/pandora/lita-mattermost"
-  # spec.license       = "Add a license"
+  spec.summary       = "An adapter to use the Lita bot in Mattermost"
+  spec.homepage      = "https://github.com/avlos/lita-mattermost/"
+  spec.license       = "MIT"
   spec.metadata      = { "lita_plugin_type" => "adapter" }
 
   spec.files         = `git ls-files`.split($/)
